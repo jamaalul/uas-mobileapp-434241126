@@ -7,6 +7,7 @@ import '../../../features/auth/presentation/providers/auth_provider.dart';
 import '../../../features/tickets/domain/entities/ticket.dart';
 import '../../../features/tickets/presentation/providers/ticket_provider.dart';
 import '../../routes/app_router.dart';
+import 'user_notifications_page.dart';
 
 class UserDashboard extends ConsumerStatefulWidget {
   const UserDashboard({super.key});
@@ -37,6 +38,30 @@ class _UserDashboardState extends ConsumerState<UserDashboard> {
           style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
         ),
         actions: [
+          // --- Bell button with badge ---
+          Consumer(
+            builder: (context, ref, _) {
+              final notificationsAsync =
+                  ref.watch(userNotificationsProvider);
+              final count = notificationsAsync.maybeWhen(
+                data: (entries) => entries.length,
+                orElse: () => 0,
+              );
+              return Badge(
+                isLabelVisible: count > 0,
+                label: Text(
+                  count > 99 ? '99+' : '$count',
+                  style: const TextStyle(fontSize: 10),
+                ),
+                child: IconButton(
+                  onPressed: () =>
+                      context.pushNamed(AppRoutes.userNotifications),
+                  icon: const Icon(Icons.notifications_outlined),
+                  tooltip: 'Notifikasi',
+                ),
+              );
+            },
+          ),
           IconButton(
             onPressed: () {
               ref.read(authProvider.notifier).logout();

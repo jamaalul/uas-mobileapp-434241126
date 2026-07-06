@@ -8,6 +8,7 @@ import '../pages/dashboard/manage_users.dart';
 import '../pages/dashboard/helpdesk_dashboard.dart';
 import '../pages/dashboard/helpdesk_ticket_detail.dart';
 import '../pages/dashboard/user_ticket_detail.dart';
+import '../pages/dashboard/user_notifications_page.dart';
 import '../pages/create_tickets/user_create_ticket.dart';
 import '../../../features/tickets/domain/entities/ticket.dart';
 
@@ -22,6 +23,7 @@ class AppRoutes {
   static const userTicketDetail = 'userTicketDetail';
   static const helpdeskTicketDetail = 'helpdeskTicketDetail';
   static const manageUsers = 'manageUsers';
+  static const userNotifications = 'userNotifications';
 }
 
 final appRouter = GoRouter(
@@ -82,6 +84,11 @@ final appRouter = GoRouter(
         final ticket = state.extra as Ticket;
         return HelpdeskTicketDetailPage(ticket: ticket);
       },
+    ),
+    GoRoute(
+      name: AppRoutes.userNotifications,
+      path: '/user-notifications',
+      builder: (context, state) => const UserNotificationsPage(),
     ),
   ],
 );
