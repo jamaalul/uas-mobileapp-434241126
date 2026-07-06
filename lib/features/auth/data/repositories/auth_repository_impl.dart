@@ -26,4 +26,9 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<UserEntity?> getCurrentUser() async {
     return await remoteDataSource.getCurrentUser();
   }
+
+  @override
+  Future<void> sendPasswordResetEmail(String email) async {
+    await remoteDataSource.sendPasswordResetEmail(email);
+  }
 }

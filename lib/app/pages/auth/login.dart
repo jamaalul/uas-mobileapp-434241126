@@ -113,6 +113,15 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   labelText: 'Password',
                 ),
               ),
+              Align(
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                  onPressed: () {
+                    context.pushNamed(AppRoutes.forgotPassword);
+                  },
+                  child: const Text('Lupa Password?'),
+                ),
+              ),
               const Spacer(),
               SizedBox(
                 width: double.infinity,

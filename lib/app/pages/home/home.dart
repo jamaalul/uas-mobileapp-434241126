@@ -35,8 +35,8 @@ class HomePage extends StatelessWidget {
               Expanded(
                 child: GridView.count(
                   crossAxisCount: 2,
-                  crossAxisSpacing: 16.0,
-                  mainAxisSpacing: 16.0,
+                  crossAxisSpacing: 8.0,
+                  mainAxisSpacing: 8.0,
                   children: [
                     _buildDashboardCard(
                       context: context,
@@ -61,8 +61,8 @@ class HomePage extends StatelessWidget {
                     ),
                     _buildDashboardCard(
                       context: context,
-                      title: 'Settings',
-                      icon: Icons.settings_outlined,
+                      title: 'Tracking',
+                      icon: Icons.search_rounded,
                       color: colorScheme.surfaceVariant,
                       onColor: colorScheme.onSurfaceVariant,
                     ),
