@@ -4,6 +4,7 @@ import '../pages/auth/login.dart';
 import '../pages/auth/register.dart';
 import '../pages/dashboard/user_dashboard.dart';
 import '../pages/dashboard/admin_dashboard.dart';
+import '../pages/dashboard/manage_users.dart';
 import '../pages/dashboard/helpdesk_dashboard.dart';
 import '../pages/dashboard/helpdesk_ticket_detail.dart';
 import '../pages/dashboard/user_ticket_detail.dart';
@@ -20,6 +21,7 @@ class AppRoutes {
   static const userCreateTicket = 'userCreateTicket';
   static const userTicketDetail = 'userTicketDetail';
   static const helpdeskTicketDetail = 'helpdeskTicketDetail';
+  static const manageUsers = 'manageUsers';
 }
 
 final appRouter = GoRouter(
@@ -49,6 +51,11 @@ final appRouter = GoRouter(
       name: AppRoutes.adminDashboard,
       path: '/admin-dashboard',
       builder: (context, state) => const AdminDashboard(),
+    ),
+    GoRoute(
+      name: AppRoutes.manageUsers,
+      path: '/manage-users',
+      builder: (context, state) => const ManageUsersPage(),
     ),
     GoRoute(
       name: AppRoutes.helpdeskDashboard,

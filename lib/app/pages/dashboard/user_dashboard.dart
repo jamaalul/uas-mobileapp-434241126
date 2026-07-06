@@ -127,11 +127,9 @@ class _UserDashboardState extends ConsumerState<UserDashboard> {
                       ),
                       Expanded(
                         child: userTickets.when(
-                          loading: () => const Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                          error: (e, _) =>
-                              Center(child: Text('Error: $e')),
+                          loading: () =>
+                              const Center(child: CircularProgressIndicator()),
+                          error: (e, _) => Center(child: Text('Error: $e')),
                           data: (tickets) => TabBarView(
                             children: _tabs.map((t) {
                               final filtered = tickets
@@ -190,10 +188,7 @@ class _UserDashboardState extends ConsumerState<UserDashboard> {
           children: [
             Icon(Icons.inbox_outlined, size: 48, color: Colors.grey),
             SizedBox(height: 12),
-            Text(
-              'Belum ada tiket',
-              style: TextStyle(color: Colors.grey),
-            ),
+            Text('Belum ada tiket', style: TextStyle(color: Colors.grey)),
           ],
         ),
       );
@@ -216,20 +211,12 @@ class _UserDashboardState extends ConsumerState<UserDashboard> {
 
     return ListTile(
       onTap: () {
-        context.pushNamed(
-          AppRoutes.userTicketDetail,
-          extra: ticket,
-        );
+        context.pushNamed(AppRoutes.userTicketDetail, extra: ticket);
       },
-      contentPadding:
-          const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       leading: CircleAvatar(
         backgroundColor: chipColor.withAlpha(40),
-        child: Icon(
-          _statusIcon(ticket.status),
-          color: chipColor,
-          size: 22,
-        ),
+        child: Icon(_statusIcon(ticket.status), color: chipColor, size: 22),
       ),
       title: Text(
         ticket.issue,
@@ -244,7 +231,6 @@ class _UserDashboardState extends ConsumerState<UserDashboard> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
     );
   }
-
 
   IconData _statusIcon(String status) {
     return switch (status) {

@@ -7,6 +7,8 @@ import '../../data/repositories/auth_repository_impl.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../../domain/usecases/login_usecase.dart';
 import '../../domain/usecases/register_usecase.dart';
+import '../../domain/entities/user_entity.dart';
+import '../../data/models/user_model.dart';
 import 'auth_state.dart';
 
 // Dependencies Providers
@@ -65,7 +67,9 @@ class AuthNotifier extends Notifier<AuthState> {
   Future<void> login(String email, String password) async {
     state = AuthLoading();
     try {
-      final user = await ref.read(loginUseCaseProvider).execute(email, password);
+      final user = await ref
+          .read(loginUseCaseProvider)
+          .execute(email, password);
       state = AuthAuthenticated(user);
     } catch (e) {
       state = AuthError(e.toString());
@@ -75,7 +79,9 @@ class AuthNotifier extends Notifier<AuthState> {
   Future<void> register(String name, String email, String password) async {
     state = AuthLoading();
     try {
-      final user = await ref.read(registerUseCaseProvider).execute(name, email, password);
+      final user = await ref
+          .read(registerUseCaseProvider)
+          .execute(name, email, password);
       state = AuthAuthenticated(user);
     } catch (e) {
       state = AuthError(e.toString());
@@ -95,4 +101,13 @@ class AuthNotifier extends Notifier<AuthState> {
 
 final authProvider = NotifierProvider<AuthNotifier, AuthState>(() {
   return AuthNotifier();
+});
+
+final allUsersProvider = StreamProvider<List<UserEntity>>((ref) {
+  final firestore = ref.watch(firestoreProvider);
+  return firestore.collection('users').snapshots().map((snapshot) {
+    return snapshot.docs
+        .map((doc) => UserModel.fromJson(doc.data(), doc.id))
+        .toList();
+  });
 });

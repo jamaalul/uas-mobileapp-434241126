@@ -32,7 +32,6 @@ class _AdminDashboardState extends ConsumerState<AdminDashboard> {
     final userTickets = ref.watch(allTicketsProvider);
     final helpdeskUsersAsync = ref.watch(helpdeskUsersProvider);
 
-
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -40,6 +39,11 @@ class _AdminDashboardState extends ConsumerState<AdminDashboard> {
           style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
         ),
         actions: [
+          IconButton(
+            icon: const Icon(Icons.people_alt_outlined),
+            tooltip: 'Kelola Pengguna',
+            onPressed: () => context.pushNamed(AppRoutes.manageUsers),
+          ),
           helpdeskUsersAsync.maybeWhen(
             data: (users) => PopupMenuButton<String>(
               icon: Icon(
@@ -67,10 +71,7 @@ class _AdminDashboardState extends ConsumerState<AdminDashboard> {
                 ),
                 ...users.map((user) {
                   final name = user['name'] as String;
-                  return PopupMenuItem(
-                    value: name,
-                    child: Text(name),
-                  );
+                  return PopupMenuItem(value: name, child: Text(name));
                 }),
               ],
             ),
@@ -103,10 +104,18 @@ class _AdminDashboardState extends ConsumerState<AdminDashboard> {
               }).toList();
 
               final counts = {
-                'open': filteredTickets.where((tk) => tk.status == 'open').length,
-                'diproses': filteredTickets.where((tk) => tk.status == 'diproses').length,
-                'selesai': filteredTickets.where((tk) => tk.status == 'selesai').length,
-                'ditolak': filteredTickets.where((tk) => tk.status == 'ditolak').length,
+                'open': filteredTickets
+                    .where((tk) => tk.status == 'open')
+                    .length,
+                'diproses': filteredTickets
+                    .where((tk) => tk.status == 'diproses')
+                    .length,
+                'selesai': filteredTickets
+                    .where((tk) => tk.status == 'selesai')
+                    .length,
+                'ditolak': filteredTickets
+                    .where((tk) => tk.status == 'ditolak')
+                    .length,
               };
 
               return Column(
@@ -137,7 +146,9 @@ class _AdminDashboardState extends ConsumerState<AdminDashboard> {
                           status: 'diproses',
                           count: counts['diproses'] ?? 0,
                           icon: Icons.pending_actions_rounded,
-                          color: Theme.of(context).colorScheme.secondaryContainer,
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.secondaryContainer,
                           onColor: Theme.of(
                             context,
                           ).colorScheme.onSecondaryContainer,
@@ -148,7 +159,9 @@ class _AdminDashboardState extends ConsumerState<AdminDashboard> {
                           status: 'selesai',
                           count: counts['selesai'] ?? 0,
                           icon: Icons.check_circle_rounded,
-                          color: Theme.of(context).colorScheme.tertiaryContainer,
+                          color: Theme.of(
+                            context,
+                          ).colorScheme.tertiaryContainer,
                           onColor: Theme.of(
                             context,
                           ).colorScheme.onTertiaryContainer,
@@ -160,7 +173,9 @@ class _AdminDashboardState extends ConsumerState<AdminDashboard> {
                           count: counts['ditolak'] ?? 0,
                           icon: Icons.cancel_rounded,
                           color: Theme.of(context).colorScheme.errorContainer,
-                          onColor: Theme.of(context).colorScheme.onErrorContainer,
+                          onColor: Theme.of(
+                            context,
+                          ).colorScheme.onErrorContainer,
                         ),
                       ],
                     ),
@@ -171,9 +186,13 @@ class _AdminDashboardState extends ConsumerState<AdminDashboard> {
                     children: [
                       const Text(
                         "Daftar tiket",
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
-                      if (_selectedHelpdesk != null && _selectedHelpdesk != 'all')
+                      if (_selectedHelpdesk != null &&
+                          _selectedHelpdesk != 'all')
                         InputChip(
                           label: Text(
                             _selectedHelpdesk == 'unassigned'
@@ -259,10 +278,7 @@ class _AdminDashboardState extends ConsumerState<AdminDashboard> {
           children: [
             Icon(Icons.inbox_outlined, size: 48, color: Colors.grey),
             SizedBox(height: 12),
-            Text(
-              'Belum ada tiket',
-              style: TextStyle(color: Colors.grey),
-            ),
+            Text('Belum ada tiket', style: TextStyle(color: Colors.grey)),
           ],
         ),
       );
@@ -284,15 +300,10 @@ class _AdminDashboardState extends ConsumerState<AdminDashboard> {
     final dateStr = DateFormat('dd MMM yyyy, HH:mm').format(ticket.createdAt);
 
     return ListTile(
-      contentPadding:
-      const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       leading: CircleAvatar(
         backgroundColor: chipColor.withAlpha(40),
-        child: Icon(
-          _statusIcon(ticket.status),
-          color: chipColor,
-          size: 22,
-        ),
+        child: Icon(_statusIcon(ticket.status), color: chipColor, size: 22),
       ),
       title: Text(
         ticket.issue,
@@ -313,7 +324,6 @@ class _AdminDashboardState extends ConsumerState<AdminDashboard> {
       ),
     );
   }
-
 
   IconData _statusIcon(String status) {
     return switch (status) {
