@@ -7,6 +7,7 @@ import '../../data/datasources/ticket_remote_datasource.dart';
 import '../../data/models/ticket_model.dart';
 import '../../data/repositories/ticket_repository_impl.dart';
 import '../../../../features/auth/presentation/providers/auth_provider.dart';
+import '../../../../features/auth/presentation/providers/auth_state.dart';
 import 'ticket_state.dart';
 
 // Dependencies
@@ -134,6 +135,47 @@ final userTicketsProvider = StreamProvider<List<Ticket>>((ref) {
       .map((snapshot) =>
           snapshot.docs.map((doc) => TicketModel.fromFirestore(doc)).toList());
 });
+
+/// Streams the full list of tickets assigned to the logged-in helpdesk user.
+final helpdeskTicketsProvider = StreamProvider<List<Ticket>>((ref) {
+  final firestore = ref.watch(firestoreProvider);
+  final authState = ref.watch(authProvider);
+
+  if (authState is! AuthAuthenticated) {
+    return Stream.value([]);
+  }
+
+  final helpdeskName = authState.user.name;
+
+  return firestore
+      .collection('tickets')
+      .where('helpdesk', isEqualTo: helpdeskName)
+      .snapshots()
+      .map((snapshot) {
+    final list = snapshot.docs.map((doc) => TicketModel.fromFirestore(doc)).toList();
+    list.sort((a, b) => b.createdAt.compareTo(a.createdAt));
+    return list;
+  });
+});
+
+/// Computes ticket counts by status ('diproses', 'selesai') for the helpdesk.
+final helpdeskTicketCountsProvider = Provider<AsyncValue<Map<String, int>>>((ref) {
+  final ticketsAsync = ref.watch(helpdeskTicketsProvider);
+  return ticketsAsync.whenData((tickets) {
+    final counts = <String, int>{
+      'diproses': 0,
+      'selesai': 0,
+    };
+    for (final ticket in tickets) {
+      final status = ticket.status;
+      if (counts.containsKey(status)) {
+        counts[status] = counts[status]! + 1;
+      }
+    }
+    return counts;
+  });
+});
+
 
 /// Streams a map of { status -> count } for ALL tickets (admin use).
 final allTicketCountsProvider = StreamProvider<Map<String, int>>((ref) {

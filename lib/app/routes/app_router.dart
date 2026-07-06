@@ -5,6 +5,7 @@ import '../pages/auth/register.dart';
 import '../pages/dashboard/user_dashboard.dart';
 import '../pages/dashboard/admin_dashboard.dart';
 import '../pages/dashboard/helpdesk_dashboard.dart';
+import '../pages/dashboard/helpdesk_ticket_detail.dart';
 import '../pages/dashboard/user_ticket_detail.dart';
 import '../pages/create_tickets/user_create_ticket.dart';
 import '../../../features/tickets/domain/entities/ticket.dart';
@@ -18,6 +19,7 @@ class AppRoutes {
   static const helpdeskDashboard = 'helpdeskDashboard';
   static const userCreateTicket = 'userCreateTicket';
   static const userTicketDetail = 'userTicketDetail';
+  static const helpdeskTicketDetail = 'helpdeskTicketDetail';
 }
 
 final appRouter = GoRouter(
@@ -64,6 +66,14 @@ final appRouter = GoRouter(
       builder: (context, state) {
         final ticket = state.extra as Ticket;
         return UserTicketDetailPage(ticket: ticket);
+      },
+    ),
+    GoRoute(
+      name: AppRoutes.helpdeskTicketDetail,
+      path: '/helpdesk-ticket-detail',
+      builder: (context, state) {
+        final ticket = state.extra as Ticket;
+        return HelpdeskTicketDetailPage(ticket: ticket);
       },
     ),
   ],
