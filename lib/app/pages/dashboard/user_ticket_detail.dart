@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../../features/tickets/domain/entities/ticket.dart';
+import 'widgets/ticket_comments_section.dart';
 
-class UserTicketDetailPage extends StatelessWidget {
+class UserTicketDetailPage extends ConsumerWidget {
   final Ticket ticket;
 
   const UserTicketDetailPage({super.key, required this.ticket});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final cs = Theme.of(context).colorScheme;
     final dateStr = DateFormat('dd MMMM yyyy, HH:mm').format(ticket.createdAt);
     final (statusColor, _, statusLabel) = _statusStyle(context, ticket.status);
@@ -135,6 +137,11 @@ class UserTicketDetailPage extends StatelessWidget {
                   },
                 ),
               ],
+
+              // Comments Section
+              TicketCommentsSection(ticketId: ticket.id),
+
+              const SizedBox(height: 24),
             ],
           ),
         ),

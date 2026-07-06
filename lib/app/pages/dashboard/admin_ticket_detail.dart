@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 
 import '../../../features/tickets/domain/entities/ticket.dart';
 import '../../../features/tickets/presentation/providers/ticket_provider.dart';
+import 'widgets/ticket_comments_section.dart';
 
 class AdminTicketDetailPage extends ConsumerStatefulWidget {
   final Ticket ticket;
@@ -356,6 +357,11 @@ class _AdminTicketDetailPageState extends ConsumerState<AdminTicketDetailPage> {
                             error: (error, stack) => Text('Error: $error'),
                           ),
                     ],
+
+                    // ── Comments Section ───────────────────────────────
+                    TicketCommentsSection(ticketId: ticket.id),
+
+                    const SizedBox(height: 24),
                   ],
                 ),
               ),
