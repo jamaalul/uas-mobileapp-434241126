@@ -9,6 +9,7 @@ class TicketModel extends Ticket {
     required super.description,
     super.attachmentUrl,
     super.helpdesk,
+    super.status = 'open',
     required super.createdAt,
   });
 
@@ -21,6 +22,7 @@ class TicketModel extends Ticket {
       description: data['description'] ?? '',
       attachmentUrl: data['attachmentUrl'],
       helpdesk: data['helpdesk'],
+      status: data['status'] ?? 'open',
       createdAt: (data['createdAt'] as Timestamp).toDate(),
     );
   }
@@ -32,6 +34,7 @@ class TicketModel extends Ticket {
       'description': description,
       'attachmentUrl': attachmentUrl,
       'helpdesk': helpdesk,
+      'status': status,
       'createdAt': Timestamp.fromDate(createdAt),
     };
   }
@@ -44,6 +47,7 @@ class TicketModel extends Ticket {
       description: entity.description,
       attachmentUrl: entity.attachmentUrl,
       helpdesk: entity.helpdesk,
+      status: entity.status,
       createdAt: entity.createdAt,
     );
   }

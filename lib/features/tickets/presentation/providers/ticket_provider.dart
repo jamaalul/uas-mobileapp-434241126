@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../domain/entities/ticket.dart';
 import '../../domain/repositories/ticket_repository.dart';
 import '../../domain/usecases/create_ticket_usecase.dart';
 import '../../data/datasources/ticket_remote_datasource.dart';
+import '../../data/models/ticket_model.dart';
 import '../../data/repositories/ticket_repository_impl.dart';
 import '../../../../features/auth/presentation/providers/auth_provider.dart';
 import 'ticket_state.dart';
@@ -52,4 +55,52 @@ class TicketNotifier extends Notifier<TicketState> {
 
 final ticketProvider = NotifierProvider<TicketNotifier, TicketState>(() {
   return TicketNotifier();
+});
+
+/// Streams a map of { status -> count } for the current user's tickets.
+final ticketCountsProvider = StreamProvider<Map<String, int>>((ref) {
+  final firestore = ref.watch(firestoreProvider);
+  final auth = ref.watch(firebaseAuthProvider);
+  final user = auth.currentUser;
+
+  if (user == null) {
+    return Stream.value({'open': 0, 'diproses': 0, 'selesai': 0, 'ditolak': 0});
+  }
+
+  return firestore
+      .collection('tickets')
+      .where('userId', isEqualTo: user.uid)
+      .snapshots()
+      .map((snapshot) {
+    final counts = <String, int>{
+      'open': 0,
+      'diproses': 0,
+      'selesai': 0,
+      'ditolak': 0,
+    };
+    for (final doc in snapshot.docs) {
+      final status = (doc.data()['status'] as String?) ?? 'open';
+      if (counts.containsKey(status)) {
+        counts[status] = counts[status]! + 1;
+      }
+    }
+    return counts;
+  });
+});
+
+/// Streams the full list of the current user's tickets, ordered by createdAt desc.
+final userTicketsProvider = StreamProvider<List<Ticket>>((ref) {
+  final firestore = ref.watch(firestoreProvider);
+  final auth = ref.watch(firebaseAuthProvider);
+  final user = auth.currentUser;
+
+  if (user == null) return Stream.value([]);
+
+  return firestore
+      .collection('tickets')
+      .where('userId', isEqualTo: user.uid)
+      .orderBy('createdAt', descending: true)
+      .snapshots()
+      .map((snapshot) =>
+          snapshot.docs.map((doc) => TicketModel.fromFirestore(doc)).toList());
 });

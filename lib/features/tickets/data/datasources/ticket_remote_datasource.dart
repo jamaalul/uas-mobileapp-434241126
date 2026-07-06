@@ -40,6 +40,7 @@ class TicketRemoteDataSourceImpl implements TicketRemoteDataSource {
       description: description,
       attachmentUrl: attachmentUrl,
       helpdesk: null,
+      status: 'open',
       createdAt: now,
     );
 
