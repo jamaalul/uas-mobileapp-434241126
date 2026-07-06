@@ -29,14 +29,14 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
     final name = _nameController.text.trim();
     final email = _emailController.text.trim();
     final password = _passwordController.text.trim();
-    
+
     if (name.isEmpty || email.isEmpty || password.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Silahkan isi semua form')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Silahkan isi semua form')));
       return;
     }
-    
+
     ref.read(authProvider.notifier).register(name, email, password);
   }
 
@@ -99,26 +99,32 @@ class _RegisterPageState extends ConsumerState<RegisterPage> {
               const SizedBox(height: 32),
               TextField(
                 controller: _nameController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                   labelText: 'Nama Lengkap',
                 ),
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 24),
               TextField(
                 controller: _emailController,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                   labelText: 'Email',
                 ),
                 keyboardType: TextInputType.emailAddress,
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 24),
               TextField(
                 controller: _passwordController,
                 obscureText: true,
-                decoration: const InputDecoration(
-                  border: OutlineInputBorder(),
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
                   labelText: 'Password',
                 ),
               ),

@@ -6,4 +6,10 @@ abstract class TicketRepository {
     required String description,
     String? attachmentUrl,
   });
+
+  Future<void> updateTicket({
+    required String ticketId,
+    String? helpdesk,
+    String? status,
+  });
 }

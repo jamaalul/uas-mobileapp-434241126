@@ -19,4 +19,17 @@ class TicketRepositoryImpl implements TicketRepository {
       attachmentUrl: attachmentUrl,
     );
   }
+
+  @override
+  Future<void> updateTicket({
+    required String ticketId,
+    String? helpdesk,
+    String? status,
+  }) async {
+    await remoteDataSource.updateTicket(
+      ticketId: ticketId,
+      helpdesk: helpdesk,
+      status: status,
+    );
+  }
 }

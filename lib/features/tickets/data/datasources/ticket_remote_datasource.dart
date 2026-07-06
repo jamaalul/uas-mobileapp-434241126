@@ -8,6 +8,12 @@ abstract class TicketRemoteDataSource {
     required String description,
     String? attachmentUrl,
   });
+
+  Future<void> updateTicket({
+    required String ticketId,
+    String? helpdesk,
+    String? status,
+  });
 }
 
 class TicketRemoteDataSourceImpl implements TicketRemoteDataSource {
@@ -47,5 +53,20 @@ class TicketRemoteDataSourceImpl implements TicketRemoteDataSource {
     await ticketRef.set(ticketModel.toJson());
 
     return ticketModel;
+  }
+
+  @override
+  Future<void> updateTicket({
+    required String ticketId,
+    String? helpdesk,
+    String? status,
+  }) async {
+    final data = <String, dynamic>{};
+    if (helpdesk != null) data['helpdesk'] = helpdesk;
+    if (status != null) data['status'] = status;
+
+    if (data.isEmpty) return;
+
+    await firestore.collection('tickets').doc(ticketId).update(data);
   }
 }
