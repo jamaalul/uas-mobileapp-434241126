@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../models/ticket_model.dart';
+import '../models/status_log_model.dart';
 
 abstract class TicketRemoteDataSource {
   Future<TicketModel> createTicket({
@@ -48,6 +49,13 @@ class TicketRemoteDataSourceImpl implements TicketRemoteDataSource {
       helpdesk: null,
       status: 'open',
       createdAt: now,
+      statusLogs: [
+        StatusLogModel(
+          status: 'open',
+          timestamp: now,
+          updatedBy: user.uid,
+        ),
+      ],
     );
 
     await ticketRef.set(ticketModel.toJson());
@@ -63,7 +71,19 @@ class TicketRemoteDataSourceImpl implements TicketRemoteDataSource {
   }) async {
     final data = <String, dynamic>{};
     if (helpdesk != null) data['helpdesk'] = helpdesk;
-    if (status != null) data['status'] = status;
+    if (status != null) {
+      data['status'] = status;
+      
+      final user = firebaseAuth.currentUser;
+      if (user != null) {
+        final log = StatusLogModel(
+          status: status,
+          timestamp: DateTime.now(),
+          updatedBy: user.uid,
+        ).toMap();
+        data['statusLogs'] = FieldValue.arrayUnion([log]);
+      }
+    }
 
     if (data.isEmpty) return;
 

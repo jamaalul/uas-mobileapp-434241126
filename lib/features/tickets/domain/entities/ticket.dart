@@ -1,3 +1,5 @@
+import 'status_log.dart';
+
 class Ticket {
   final String id;
   final String userId;
@@ -7,6 +9,7 @@ class Ticket {
   final String? helpdesk;
   final String status;
   final DateTime createdAt;
+  final List<StatusLog>? statusLogs;
 
   Ticket({
     required this.id,
@@ -17,5 +20,6 @@ class Ticket {
     this.helpdesk,
     this.status = 'open',
     required this.createdAt,
+    this.statusLogs,
   });
 }

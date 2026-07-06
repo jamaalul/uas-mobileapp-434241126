@@ -215,6 +215,12 @@ class _UserDashboardState extends ConsumerState<UserDashboard> {
     final dateStr = DateFormat('dd MMM yyyy, HH:mm').format(ticket.createdAt);
 
     return ListTile(
+      onTap: () {
+        context.pushNamed(
+          AppRoutes.userTicketDetail,
+          extra: ticket,
+        );
+      },
       contentPadding:
           const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       leading: CircleAvatar(

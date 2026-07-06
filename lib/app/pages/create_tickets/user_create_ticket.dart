@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../routes/app_router.dart';
 import '../../../features/tickets/presentation/providers/ticket_provider.dart';
 import '../../../features/tickets/presentation/providers/ticket_state.dart';
 
@@ -63,7 +64,10 @@ class _CreateTicketPageState extends ConsumerState<CreateTicketPage> {
 
     ref.listen<TicketState>(ticketProvider, (previous, next) {
       if (next is TicketSuccess) {
-        context.pop();
+        context.pushReplacementNamed(
+          AppRoutes.userTicketDetail,
+          extra: next.ticket,
+        );
       } else if (next is TicketError) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text(next.message)),

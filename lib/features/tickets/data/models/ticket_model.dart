@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../domain/entities/ticket.dart';
+import 'status_log_model.dart';
 
 class TicketModel extends Ticket {
   TicketModel({
@@ -11,10 +12,16 @@ class TicketModel extends Ticket {
     super.helpdesk,
     super.status = 'open',
     required super.createdAt,
+    super.statusLogs,
   });
 
   factory TicketModel.fromFirestore(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;
+    final statusLogsList = data['statusLogs'] as List<dynamic>?;
+    final statusLogs = statusLogsList
+        ?.map((log) => StatusLogModel.fromMap(log as Map<String, dynamic>))
+        .toList();
+        
     return TicketModel(
       id: doc.id,
       userId: data['userId'] ?? '',
@@ -24,6 +31,7 @@ class TicketModel extends Ticket {
       helpdesk: data['helpdesk'],
       status: data['status'] ?? 'open',
       createdAt: (data['createdAt'] as Timestamp).toDate(),
+      statusLogs: statusLogs,
     );
   }
 
@@ -36,6 +44,9 @@ class TicketModel extends Ticket {
       'helpdesk': helpdesk,
       'status': status,
       'createdAt': Timestamp.fromDate(createdAt),
+      'statusLogs': statusLogs?.map((log) {
+        return StatusLogModel.fromEntity(log).toMap();
+      }).toList(),
     };
   }
 
@@ -49,6 +60,7 @@ class TicketModel extends Ticket {
       helpdesk: entity.helpdesk,
       status: entity.status,
       createdAt: entity.createdAt,
+      statusLogs: entity.statusLogs,
     );
   }
 }
