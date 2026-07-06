@@ -88,6 +88,22 @@ class _HelpdeskTicketDetailPageState extends ConsumerState<HelpdeskTicketDetailP
           'Detail Tiket',
           style: TextStyle(fontWeight: FontWeight.w600),
         ),
+        actions: [
+          if (showCompleteButton)
+            Padding(
+              padding: const EdgeInsets.only(right: 16.0),
+              child: FilledButton.icon(
+                onPressed: _isLoading ? null : _completeTicket,
+                icon: const Icon(Icons.check_circle_rounded, size: 18),
+                label: const Text('Selesaikan'),
+                style: FilledButton.styleFrom(
+                  backgroundColor: cs.tertiary,
+                  foregroundColor: cs.onTertiary,
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                ),
+              ),
+            ),
+        ],
       ),
       body: SafeArea(
         child: _isLoading
@@ -243,28 +259,7 @@ class _HelpdeskTicketDetailPageState extends ConsumerState<HelpdeskTicketDetailP
                       ),
                     ],
 
-                    // ── Actions Section ──────────────────────────────────
-                    if (showCompleteButton) ...[
-                      const SizedBox(height: 40),
-                      SizedBox(
-                        width: double.infinity,
-                        child: FilledButton.icon(
-                          onPressed: _isLoading ? null : _completeTicket,
-                          icon: const Icon(Icons.check_circle_rounded),
-                          label: const Text('Selesaikan Tiket'),
-                          style: FilledButton.styleFrom(
-                            backgroundColor: cs.tertiary,
-                            foregroundColor: cs.onTertiary,
-                            padding: const EdgeInsets.symmetric(vertical: 16),
-                            textStyle: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              inherit: false,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+
                   ],
                 ),
               ),

@@ -125,12 +125,45 @@ class _AdminTicketDetailPageState extends ConsumerState<AdminTicketDetailPage> {
 
     return Scaffold(
       appBar: AppBar(
-          title: const Text(
-            'Detail Tiket',
-            style: TextStyle(
-              fontWeight: FontWeight.w600
-            ),
+        title: const Text(
+          'Detail Tiket',
+          style: TextStyle(
+            fontWeight: FontWeight.w600
           ),
+        ),
+        actions: [
+          if (isActionable) ...[
+            FilledButton.icon(
+              onPressed: _isLoading ? null : _assignHelpdesk,
+              icon: _isLoading
+                  ? const SizedBox(
+                      height: 18,
+                      width: 18,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 2,
+                        valueColor: AlwaysStoppedAnimation(Colors.white),
+                      ),
+                    )
+                  : const Icon(Icons.assignment_ind_rounded, size: 18),
+              label: const Text('Tugaskan'),
+              style: FilledButton.styleFrom(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+              ),
+            ),
+            const SizedBox(width: 8),
+            OutlinedButton.icon(
+              onPressed: _isLoading ? null : _rejectTicket,
+              icon: const Icon(Icons.cancel_rounded, size: 18),
+              label: const Text('Tolak'),
+              style: OutlinedButton.styleFrom(
+                side: BorderSide(color: cs.error),
+                foregroundColor: cs.error,
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+              ),
+            ),
+            const SizedBox(width: 16),
+          ],
+        ],
       ),
       body: SafeArea(
         child: _isLoading
@@ -322,55 +355,6 @@ class _AdminTicketDetailPageState extends ConsumerState<AdminTicketDetailPage> {
                             ),
                             error: (error, stack) => Text('Error: $error'),
                           ),
-                      const SizedBox(height: 20),
-                      SizedBox(
-                        width: double.infinity,
-                        child: FilledButton.icon(
-                          onPressed: _isLoading ? null : _assignHelpdesk,
-                          icon: _isLoading
-                              ? const SizedBox(
-                                  height: 18,
-                                  width: 18,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                    valueColor: AlwaysStoppedAnimation(
-                                      Colors.white,
-                                    ),
-                                  ),
-                                )
-                              : const Icon(Icons.assignment_ind_rounded),
-                          label: const Text('Tugaskan & Proses Tiket'),
-                          style: FilledButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(vertical: 16),
-                            textStyle: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              inherit:
-                                  false, // ── Fixes the interpolation animation crash
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      SizedBox(
-                        width: double.infinity,
-                        child: OutlinedButton.icon(
-                          onPressed: _isLoading ? null : _rejectTicket,
-                          icon: const Icon(Icons.cancel_rounded),
-                          label: const Text('Tolak Tiket'),
-                          style: OutlinedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(vertical: 16),
-                            side: BorderSide(color: cs.error),
-                            foregroundColor: cs.error,
-                            textStyle: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              inherit:
-                                  false, // ── Fixes the interpolation animation crash
-                            ),
-                          ),
-                        ),
-                      ),
                     ],
                   ],
                 ),
