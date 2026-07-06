@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../../features/auth/presentation/providers/auth_provider.dart';
+import '../../../features/auth/presentation/providers/auth_state.dart';
 import '../../../features/tickets/domain/entities/ticket.dart';
 import '../../../features/tickets/presentation/providers/ticket_provider.dart';
 import '../../routes/app_router.dart';
@@ -27,11 +28,41 @@ class _HelpdeskDashboardState extends ConsumerState<HelpdeskDashboard> {
   Widget build(BuildContext context) {
     final ticketCounts = ref.watch(helpdeskTicketCountsProvider);
     final userTickets = ref.watch(helpdeskTicketsProvider);
+    final authState = ref.watch(authProvider);
+    final currentUser = authState is AuthAuthenticated ? authState.user : null;
+    final userName = currentUser?.name ?? 'Dashboard';
+    final initials = currentUser != null && currentUser.name.isNotEmpty
+        ? currentUser.name
+              .trim()
+              .split(' ')
+              .map((w) => w[0])
+              .take(2)
+              .join()
+              .toUpperCase()
+        : '?';
 
     return Scaffold(
       appBar: AppBar(
+        titleSpacing: 0,
+        leading: GestureDetector(
+          onTap: () => context.pushNamed(AppRoutes.profile),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: CircleAvatar(
+              backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+              child: Text(
+                initials,
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.onPrimaryContainer,
+                ),
+              ),
+            ),
+          ),
+        ),
         title: Text(
-          "Dashboard",
+          userName,
           style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
         ),
         actions: [

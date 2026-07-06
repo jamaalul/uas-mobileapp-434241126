@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
 import '../../../features/auth/presentation/providers/auth_provider.dart';
+import '../../../features/auth/presentation/providers/auth_state.dart';
 import '../../../features/tickets/domain/entities/ticket.dart';
 import '../../../features/tickets/presentation/providers/ticket_provider.dart';
 import '../../routes/app_router.dart';
@@ -31,12 +32,36 @@ class _AdminDashboardState extends ConsumerState<AdminDashboard> {
   Widget build(BuildContext context) {
     final userTickets = ref.watch(allTicketsProvider);
     final helpdeskUsersAsync = ref.watch(helpdeskUsersProvider);
+    final authState = ref.watch(authProvider);
+    final currentUser = authState is AuthAuthenticated ? authState.user : null;
+    final userName = currentUser?.name ?? 'Dashboard';
+    final initials = currentUser != null && currentUser.name.isNotEmpty
+        ? currentUser.name.trim().split(' ').map((w) => w[0]).take(2).join().toUpperCase()
+        : '?';
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          "Dashboard",
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
+        titleSpacing: 0,
+        leading: GestureDetector(
+          onTap: () => context.pushNamed(AppRoutes.profile),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: CircleAvatar(
+              backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+              child: Text(
+                initials,
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.onPrimaryContainer,
+                ),
+              ),
+            ),
+          ),
+        ),
+        title: Text(
+          userName,
+          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
         ),
         actions: [
           IconButton(
