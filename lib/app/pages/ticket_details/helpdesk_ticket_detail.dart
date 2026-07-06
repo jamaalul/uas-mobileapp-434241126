@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 
 import '../../../features/tickets/domain/entities/ticket.dart';
 import '../../../features/tickets/presentation/providers/ticket_provider.dart';
-import 'widgets/ticket_comments_section.dart';
+import '../dashboard/widgets/ticket_comments_section.dart';
 
 class HelpdeskTicketDetailPage extends ConsumerStatefulWidget {
   final Ticket ticket;

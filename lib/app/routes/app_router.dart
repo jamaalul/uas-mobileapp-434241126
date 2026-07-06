@@ -4,12 +4,12 @@ import '../pages/auth/login.dart';
 import '../pages/auth/register.dart';
 import '../pages/dashboard/user_dashboard.dart';
 import '../pages/dashboard/admin_dashboard.dart';
-import '../pages/dashboard/manage_users.dart';
+import '../pages/manage_users/manage_users.dart';
 import '../pages/dashboard/helpdesk_dashboard.dart';
-import '../pages/dashboard/helpdesk_ticket_detail.dart';
-import '../pages/dashboard/user_ticket_detail.dart';
-import '../pages/dashboard/user_notifications_page.dart';
-import '../pages/create_tickets/user_create_ticket.dart';
+import '../pages/ticket_details/helpdesk_ticket_detail.dart';
+import '../pages/ticket_details/user_ticket_detail.dart';
+import '../pages/notifications/user_notifications_page.dart';
+import '../pages/create_tickets/create_ticket.dart';
 import '../pages/profile/profile_page.dart';
 import '../../../features/tickets/domain/entities/ticket.dart';
 

@@ -8,7 +8,7 @@ import '../../../features/auth/presentation/providers/auth_state.dart';
 import '../../../features/tickets/domain/entities/ticket.dart';
 import '../../../features/tickets/presentation/providers/ticket_provider.dart';
 import '../../routes/app_router.dart';
-import 'admin_ticket_detail.dart';
+import '../ticket_details/admin_ticket_detail.dart';
 
 class AdminDashboard extends ConsumerStatefulWidget {
   const AdminDashboard({super.key});

@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../../features/tickets/domain/entities/ticket.dart';
-import 'widgets/ticket_comments_section.dart';
+import '../dashboard/widgets/ticket_comments_section.dart';
 
 class UserTicketDetailPage extends ConsumerWidget {
   final Ticket ticket;

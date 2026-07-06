@@ -8,7 +8,7 @@ import '../../../features/auth/presentation/providers/auth_state.dart';
 import '../../../features/tickets/domain/entities/ticket.dart';
 import '../../../features/tickets/presentation/providers/ticket_provider.dart';
 import '../../routes/app_router.dart';
-import 'user_notifications_page.dart';
+import '../notifications/user_notifications_page.dart';
 
 class UserDashboard extends ConsumerStatefulWidget {
   const UserDashboard({super.key});
