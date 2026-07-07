@@ -52,3 +52,4 @@ ios/Runner/GoogleService-Info.plist
 .env*
 firebase.json
 .firebaserc
+android/key.properties
