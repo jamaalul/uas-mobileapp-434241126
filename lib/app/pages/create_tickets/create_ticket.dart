@@ -21,7 +21,7 @@ class _CreateTicketPageState extends ConsumerState<CreateTicketPage> {
   final TextEditingController _descriptionController = TextEditingController();
   File? _imageFile;
   
-  final String _dummyImageUrl = "https://dipstrategy.co.id/blog/wp-content/uploads/2018/02/stop-making-memes-and-get-back-to-work.jpg";
+  final String _dummyImageUrl = "https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcQNKXjEp_RKITnPJmlb2el_5BvW1tDgrcwbtSj9F8MJVw8ngwgu";
   final ImagePicker _picker = ImagePicker();
 
   @override
